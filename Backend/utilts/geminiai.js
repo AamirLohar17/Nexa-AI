@@ -8,7 +8,7 @@ const models = [
   "gemini-3.5-flash-lite",
 ];
 
-const getGeminiAIAPIResponse = async (message) => {
+export const getGeminiAIAPIResponse = async (message) => {
   let lastError = null;
 
   for (const model of models) {
