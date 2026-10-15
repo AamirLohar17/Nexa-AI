@@ -1,0 +1,141 @@
+
+.chatWindow {
+    background-color: #F8FBFF;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+/* Navbar */
+
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #DCE8F5;
+}
+
+.navbar span {
+    margin: 1rem 2rem;
+}
+
+.userIconDiv {
+    margin: 1rem 2rem;
+}
+
+.userIcon {
+    background-color: #3186E8;
+    color: #FFFFFF;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* Chat input */
+
+.chatInput {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputBox {
+    width: 90%;
+    position: relative;
+    max-width: 700px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inputBox input {
+    width: 100%;
+    border: 1px solid #D5E4F5;
+    background-color: #FFFFFF;
+    color: #183153;
+    padding: 20px;
+    padding-right: 55px;
+    font-size: 0.9rem;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(49, 134, 232, 0.08);
+}
+
+.inputBox input::placeholder {
+    color: #8A9DB5;
+}
+
+.inputBox input:focus {
+    outline: none;
+    border-color: #79B5F5;
+    box-shadow: 0 0 0 3px rgba(49, 134, 232, 0.1);
+}
+
+#submit {
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+    font-size: 20px;
+    position: absolute;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3186E8;
+}
+
+#submit i {
+    color: #3186E8;
+}
+
+#submit i:hover {
+    color: #1D65BD;
+}
+
+.info {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+    color: #7186A0;
+}
+
+/* Dropdown */
+
+.dropDown {
+    position: absolute;
+    top: 4rem;
+    right: 4rem;
+    width: 150px;
+    background-color: #FFFFFF;
+    color: #183153;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid #DCE8F5;
+    border-radius: 8px;
+    text-align: left;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(35, 82, 130, 0.12);
+}
+
+.dropDownItem {
+    font-size: 0.9rem;
+    margin: 0.3rem 0;
+    padding: 0.5rem 0.4rem;
+    color: #35516F;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.dropDownItem:hover {
+    background-color: #EAF3FF;
+    color: #1D65BD;
+}
