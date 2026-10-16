@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json());
 
 app.use(cors({
-    origin: "https://nexa-ai-lyart-alpha.vercel.app",
+    origin: "https://nexa-6es2rolmn-amex16.vercel.app",
     credentials: true
 }));
 
