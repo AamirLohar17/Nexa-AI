@@ -18,7 +18,7 @@ function App() {
   const [allThreads, setAllThreads] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/auth/me", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
       credentials: "include",
     })
       .then(async (res) => {
