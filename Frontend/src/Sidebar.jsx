@@ -1,4 +1,5 @@
 import "./Sidebar.css";
+import logo from "./assets/NexaAI.png";
 import { useContext, useEffect } from "react";
 import { MyContext } from "./MyContext.jsx";
 import { v1 as uuidv1 } from "uuid";
@@ -108,7 +109,7 @@ function Sidebar() {
   return (
     <section className="sidebar">
       <button onClick={createNewChat}>
-        <img src="src/assets/NexaAI.png" alt="AI logo" className="logo"></img>
+        <img src={logo} alt="AI logo" className="logo" />
         <span>
           <i className="fa-solid fa-pen-to-square"></i>
         </span>
