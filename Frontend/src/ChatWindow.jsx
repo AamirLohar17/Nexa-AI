@@ -29,7 +29,7 @@ function ChatWindow() {
     const message = prompt.trim();
 
     try {
-      const response = await fetch("http://localhost:8080/api/chat", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
         method: "POST",
         credentials: "include",
         headers: {
