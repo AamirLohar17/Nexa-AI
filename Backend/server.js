@@ -15,6 +15,7 @@ import authRoutes from "./routes/auth.js";
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
@@ -35,8 +36,8 @@ app.use(session({
     }),
     cookie: {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000
     }
 }));
