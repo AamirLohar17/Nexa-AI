@@ -50,6 +50,14 @@ passport.deserializeUser(User.deserializeUser());
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+    console.log("Path:", req.path);
+    console.log("Session ID:", req.sessionID);
+    console.log("Authenticated:", req.isAuthenticated());
+    console.log("User ID:", req.user?._id);
+    next();
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api", chatRoutes);
 
