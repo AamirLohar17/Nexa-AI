@@ -9,6 +9,7 @@ import { v1 as uuidv1 } from "uuid";
 function App() {
   const [user, setUser] = useState(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   const [prompt, setPrompt] = useState("");
   const [reply, setReply] = useState(null);
@@ -18,7 +19,7 @@ function App() {
   const [allThreads, setAllThreads] = useState([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, { 
       credentials: "include",
     })
       .then(async (res) => {
@@ -40,6 +41,7 @@ function App() {
     setAllThreads([]);
     setCurrThreadId(uuidv1());
     setNewChat(true);
+    setIsMobileSidebarOpen(false);
   };
 
   const providerValues = {
@@ -68,8 +70,18 @@ function App() {
   return (
     <div className="app">
       <MyContext.Provider value={providerValues}>
-        <Sidebar />
-        <ChatWindow />
+        {isMobileSidebarOpen && (
+          <button
+            className="sidebarBackdrop"
+            aria-label="Close chat history"
+            onClick={() => setIsMobileSidebarOpen(false)}
+          />
+        )}
+        <Sidebar
+          isMobileOpen={isMobileSidebarOpen}
+          onClose={() => setIsMobileSidebarOpen(false)}
+        />
+        <ChatWindow onMenuClick={() => setIsMobileSidebarOpen((open) => !open)} />
       </MyContext.Provider>
     </div>
   );

@@ -1,29 +1,66 @@
 * {
-    color: #183153;
-    font-family: Roboto, "Open Sans", "Helvetica Neue", sans-serif;
     box-sizing: border-box;
+    font-family: Inter, Roboto, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+:root {
+    color-scheme: dark;
+    --app-bg: #101114;
+    --sidebar-bg: #17191e;
+    --panel-bg: #1c1f25;
+    --panel-hover: #262a32;
+    --border-color: #30343d;
+    --text-primary: #f1f3f5;
+    --text-secondary: #a0a6b3;
+    --accent: #a5b4fc;
+    --accent-strong: #818cf8;
+}
+
+html, body, #root {
+    min-height: 100%;
+    width: 100%;
+    margin: 0;
 }
 
 body {
     padding: 0;
-    margin: 0;
-    background-color: #F8FBFF;
+    background: var(--app-bg);
+    color: var(--text-primary);
+}
+
+button, input {
+    font: inherit;
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
 }
 
 .app {
-    background-color: #F8FBFF;
+    position: relative;
     display: flex;
-    min-height: 100vh;
     width: 100%;
+    height: 100dvh;
+    min-height: 100vh;
+    overflow: hidden;
+    background: var(--app-bg);
+    color: var(--text-primary);
+}
+
+.sidebarBackdrop {
+    display: none;
 }
 
 .authPage {
     min-height: 100vh;
+    min-height: 100dvh;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #F8FBFF;
+    background:
+        radial-gradient(circle at top right, rgba(129, 140, 248, 0.12), transparent 35%),
+        var(--app-bg);
     padding: 20px;
 }
 
@@ -34,35 +71,53 @@ body {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    background: white;
-    border: 1px solid #DCE8F5;
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(49, 134, 232, 0.08);
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.25);
 }
 
 .authForm h1 {
-    color: #3186E8;
+    color: var(--accent);
     margin: 0;
 }
 
 .authForm p {
-    color: #7186A0;
+    color: var(--text-secondary);
 }
 
 .authForm input {
-    padding: 13px;
-    border: 1px solid #D5E4F5;
-    border-radius: 8px;
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
     font-size: 15px;
+    background: #13151a;
+    color: var(--text-primary);
+}
+
+.authForm input:focus {
+    outline: 2px solid rgba(165, 180, 252, 0.25);
+    border-color: var(--accent-strong);
 }
 
 .authForm > button {
     padding: 13px;
-    background: #3186E8;
-    color: white;
+    background: var(--accent-strong);
+    color: #101114;
+    font-weight: 700;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
+    transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.authForm > button:hover {
+    filter: brightness(1.08);
+}
+
+.authForm > button:active {
+    transform: scale(0.99);
 }
 
 .authForm > button:disabled {
@@ -73,15 +128,46 @@ body {
 .authSwitch {
     background: none;
     border: none;
-    color: #3186E8;
+    color: var(--accent);
     cursor: pointer;
 }
 
 .authError {
-    color: #DC4545 !important;
+    color: #ff8585 !important;
 }
 
 .authLoading {
-    padding: 40px;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
     text-align: center;
+    background: var(--app-bg);
+    color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+    .sidebarBackdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        border: 0;
+        background: rgba(0, 0, 0, 0.58);
+        cursor: pointer;
+    }
+}
+
+@media (max-width: 480px) {
+    .authPage {
+        padding: 16px;
+    }
+
+    .authForm {
+        padding: 24px 20px;
+        border-radius: 15px;
+    }
 }

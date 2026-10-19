@@ -4,7 +4,7 @@ import { MyContext } from "./MyContext.jsx";
 import { useContext, useState, useEffect } from "react";
 import { RingLoader } from "react-spinners";
 
-function ChatWindow() {
+function ChatWindow({ onMenuClick = () => {} }) {
   const {
     prompt,
     setPrompt,
@@ -56,7 +56,6 @@ function ChatWindow() {
     }
   };
 
-  // Append messages after a successful AI response
   useEffect(() => {
     if (prompt && reply) {
       setPrevChats((prevChats) => [
@@ -64,7 +63,6 @@ function ChatWindow() {
         { role: "user", content: prompt },
         { role: "assistant", content: reply },
       ]);
-
       setPrompt("");
     }
   }, [reply]);
@@ -75,7 +73,7 @@ function ChatWindow() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch( `${import.meta.env.VITE_API_URL}/api/auth/logout`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -94,64 +92,83 @@ function ChatWindow() {
   };
 
   return (
-    <div className="chatWindow">
-      <div className="navbar">
-        <span>
-          NexaAI <i className="fa-solid fa-chevron-down"></i>
-        </span>
-
-        <div className="userIconDiv" onClick={handleProfileClick}>
-          <span className="userIcon">
-            <i className="fa-solid fa-user"></i>
-          </span>
+    <main className="chatWindow">
+      <header className="navbar">
+        <div className="navbarLeft">
+          <button
+            type="button"
+            className="mobileMenuButton"
+            onClick={onMenuClick}
+            aria-label="Open chat history"
+          >
+            <i className="fa-solid fa-bars"></i>
+          </button>
+          <span className="navbarTitle">NexaAI <span className="titleDot">•</span></span>
         </div>
-      </div>
+
+        <button
+          type="button"
+          className="userIconDiv"
+          onClick={handleProfileClick}
+          aria-label="Open profile menu"
+          aria-expanded={isOpen}
+        >
+          <span className="userIcon"><i className="fa-solid fa-user"></i></span>
+        </button>
+      </header>
 
       {isOpen && (
-        <div className="dropDown">
-          <div className="dropDownItem">
-            <i className="fa-solid fa-gear"></i> Settings
+        <>
+          <button
+            type="button"
+            className="dropdownBackdrop"
+            aria-label="Close profile menu"
+            onClick={() => setIsOpen(false)}
+          />
+          <div className="dropDown">
+            <div className="dropDownItem">
+              <i className="fa-solid fa-gear"></i> Settings
+            </div>
+            <div className="dropDownItem">
+              <i className="fa-solid fa-cloud-arrow-up"></i> Upgrade plan
+            </div>
+            <button type="button" className="dropDownItem" onClick={handleLogout}>
+              <i className="fa-solid fa-arrow-right-from-bracket"></i> Log out
+            </button>
           </div>
-
-          <div className="dropDownItem">
-            <i className="fa-solid fa-cloud-arrow-up"></i> Upgrade plan
-          </div>
-
-          <div className="dropDownItem" onClick={handleLogout}>
-            <i className="fa-solid fa-arrow-right-from-bracket"></i> Log out
-          </div>
-        </div>
+        </>
       )}
 
       <Chat />
 
-      <RingLoader color="#3186E8" loading={loading} />
+      <div className="loadingArea">
+        <RingLoader color="#a5b4fc" loading={loading} size={32} />
+      </div>
 
-      {error && <p className="authError">{error}</p>}
+      {error && <p className="authError chatError">{error}</p>}
 
       <div className="chatInput">
-        <div className="inputBox">
+        <form
+          className="inputBox"
+          onSubmit={(e) => {
+            e.preventDefault();
+            getReply();
+          }}
+        >
           <input
-            placeholder="Ask anything"
+            aria-label="Message NexaAI"
+            placeholder="Message NexaAI..."
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") getReply();
-            }}
             disabled={loading}
           />
-
-          <div id="submit" onClick={getReply} title="Send message">
-            <i className="fa-solid fa-paper-plane"></i>
-          </div>
-        </div>
-
-        <p className="info">
-          NexaAI can make mistakes. Check important info. See Cookie
-          Preferences.
-        </p>
+          <button id="submit" type="submit" title="Send message" aria-label="Send message" disabled={loading || !prompt.trim()}>
+            <i className="fa-solid fa-arrow-up"></i>
+          </button>
+        </form>
+        <p className="info">NexaAI can make mistakes. Check important information.</p>
       </div>
-    </div>
+    </main>
   );
 }
 

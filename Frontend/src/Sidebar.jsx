@@ -4,7 +4,7 @@ import { useContext, useEffect } from "react";
 import { MyContext } from "./MyContext.jsx";
 import { v1 as uuidv1 } from "uuid";
 
-function Sidebar() {
+function Sidebar({ isMobileOpen = false, onClose = () => {} }) {
   const {
     allThreads,
     setAllThreads,
@@ -49,10 +49,12 @@ function Sidebar() {
     setReply(null);
     setCurrThreadId(uuidv1());
     setPrevChats([]);
+    onClose();
   };
 
   const changeThread = async (newThreadId) => {
     setCurrThreadId(newThreadId);
+    onClose();
 
     try {
       const response = await fetch(
@@ -91,9 +93,11 @@ function Sidebar() {
         },
       );
       const res = await response.json();
-      console.log(res);
 
-      //updated threads re-render
+      if (!response.ok) {
+        throw new Error(res.error || "Failed to delete chat");
+      }
+
       setAllThreads((prev) =>
         prev.filter((thread) => thread.threadId !== threadId),
       );
@@ -102,40 +106,61 @@ function Sidebar() {
         createNewChat();
       }
     } catch (err) {
-      console.log(err);
+      console.error("Failed to delete thread:", err);
     }
   };
 
   return (
-    <section className="sidebar">
-      <button onClick={createNewChat}>
-        <img src={logo} alt="AI logo" className="logo" />
-        <span>
-          <i className="fa-solid fa-pen-to-square"></i>
-        </span>
-      </button>
-
-      <ul className="history">
-        {allThreads?.map((thread, idx) => (
-          <li
-            key={idx}
-            onClick={(e) => changeThread(thread.threadId)}
-            className={thread.threadId === currThreadId ? "highlighted" : " "}
+    <section className={`sidebar${isMobileOpen ? " sidebar--open" : ""}`}>
+      <div className="sidebarTop">
+        <div className="sidebarBrand">
+          <img src={logo} alt="NexaAI logo" className="logo" />
+          <span>NexaAI</span>
+          <button
+            className="sidebarClose"
+            onClick={onClose}
+            aria-label="Close sidebar"
+            type="button"
           >
-            {thread.title}
-            <i
-              className="fa-solid fa-trash"
-              onClick={(e) => {
-                e.stopPropagation(); //stop event bubbling
-                deleteThread(thread.threadId);
-              }}
-            ></i>
-          </li>
-        ))}
-      </ul>
+            <i className="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <button className="newChatButton" onClick={createNewChat} type="button">
+          <span><i className="fa-solid fa-pen-to-square"></i> New chat</span>
+          <span className="newChatShortcut">+</span>
+        </button>
+      </div>
+
+      <div className="historySection">
+        <p className="historyLabel">RECENT CHATS</p>
+        <ul className="history">
+          {allThreads?.map((thread) => (
+            <li
+              key={thread.threadId}
+              onClick={() => changeThread(thread.threadId)}
+              className={thread.threadId === currThreadId ? "highlighted" : ""}
+              title={thread.title}
+            >
+              <span className="threadTitle">{thread.title}</span>
+              <button
+                type="button"
+                className="deleteThreadButton"
+                aria-label={`Delete ${thread.title}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteThread(thread.threadId);
+                }}
+              >
+                <i className="fa-solid fa-trash"></i>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div className="sign">
-        <p>By Aamir Lohar &hearts;</p>
+        <p>Made with <span aria-label="love">♥</span> by Aamir Lohar</p>
       </div>
     </section>
   );
